@@ -25,11 +25,8 @@ function Register() {
     const data = new FormData(new_state.target);
     const form_json = Object.fromEntries(data);
 
-    await axios.post(url, form_json).then((response)=>{
-      console.log(response.data);
-    }).catch((error) => {
-      console.log("ERROR:" + error);
-    });
+    const res = await axios.post(url, form_json)
+    console.log(res.data);
   }
 
   return (
