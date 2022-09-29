@@ -5,6 +5,9 @@ const userRoutes = require("./api_rest/src/user/routes");
 const app = express();
 const port = 3001;
 
+const cors = require('cors');
+app.use(cors());
+
 // Allows to post and get json from our end points.
 app.use(express.json());
 

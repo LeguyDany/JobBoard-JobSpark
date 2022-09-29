@@ -1,5 +1,4 @@
 // Tells what happens depending on the request (post, delete, get...).
-
 const { Router } = require('express');
 const controller = require('./controller')
 
