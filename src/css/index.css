@@ -1,0 +1,168 @@
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #F9F9FB;
+}
+
+code {
+  font-family: "IBM Plex Sans";
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.woff') format('woff2'),
+    url('../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.woff2') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff') format('woff2'),
+    url('../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff2') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff') format('woff2'),
+    url('../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ================= Graphic charter ================= */
+/* ----------------- Colors ----------------- */
+:root {
+  --yellow0: #FADA05;
+  --black0: #202530;
+  --black1: #353D4F;
+  --black2: #4A546E;
+  --black3: #566280;
+  --black4: #677598;
+  --gray0: #D1D5E0;
+  --gray1: #F9F9FB;
+  --white: #FFF;
+}
+
+.yellow0 {
+  background-color: #FADA05;
+}
+
+.black0 {
+  background-color: #202530;
+}
+
+.black1 {
+  background-color: #353D4F;
+}
+
+.black2 {
+  background-color: #4A546E;
+}
+
+.black3 {
+  background-color: #566280;
+}
+
+.black4 {
+  background-color: #677598;
+}
+
+.gray0 {
+  background-color: #D1D5E0;
+}
+
+.gray1 {
+  background-color: #E7E9EE;
+}
+
+.gray2 {
+  background-color: #F9F9FB;
+}
+
+.white {
+  background-color: #FFF;
+}
+
+/* ----------------- Fonts ----------------- */
+h1 {
+  font-family: "IBM Plex Sans";
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: bold;
+}
+
+h2 {
+  font-family: "IBM Plex Sans";
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 500;
+}
+
+h3 {
+  font-family: "IBM Plex Sans";
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 500;
+}
+
+h4 {
+  font-family: "IBM Plex Sans";
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+p {
+  font-family: "IBM Plex Sans";
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: normal;
+}
+
+/* ================= General components ================= */
+/* ----------------- header ----------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  box-shadow: 0px 10px 20px 0px rgba(0, 0, 255, .04);
+  padding: 10px 0px 10px 80px;
+  height: 65px;
+}
+
+header>nav {
+  display: flex;
+  height: calc(100%);
+  flex-direction: row;
+  align-items: center;
+}
+
+header>nav>a>h4 {
+  color: white;
+}
+
+header>nav>a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% + 20px);
+  width: 130px;
+  transition: .5s;
+}
+
+header>nav>a:hover {
+  width: 165px;
+  transition: .5s;
+}
+
+/* ========== Mediaqueries ========== */
+/* Breakpoints : 1020px,  */

@@ -1,0 +1,42 @@
+@import "index.css";
+
+section.black0 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px 40px 20px;
+}
+
+section.black0>h1 {
+    color: var(--white);
+}
+
+section.black0>div {
+    width: 200px;
+    transform: translateY(-20px);
+    height: 5px;
+}
+
+section.black0>input {
+    width: 60vw;
+    max-width: 600px;
+    font-size: 20px;
+    padding: 12px;
+    padding-left: 52px;
+    background-image: url("../assets/pictograms/Icons/search-line.svg");
+    background-repeat: no-repeat;
+    background-position: 14px 50%;
+    background-size: 24px 24px;
+    border: none;
+    border-bottom: solid 0px var(--yellow0);
+    transition: .4s;
+    outline: none;
+    color: var(--black0);
+}
+section.black0>input:focus {
+    transition: .4s;
+    border-bottom: solid 4px var(--yellow0);
+}
+::placeholder {
+    color: var(--black4);
+}

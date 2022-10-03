@@ -1,11 +1,40 @@
+// Importing React
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import { useState } from 'react';
+
+// Importing other libraries
 import axios from 'axios';
 
-function Register() {
+// Importing modules
+import './css/index.css';
 
+// Importing other things
+import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.woff";
+import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.woff2";
+import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff";
+import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff2";
+import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff";
+import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff2";
+
+import Bo_listing from "./back-office.js";
+
+function Header(){
+  return(
+    <header>
+      <img src={"./Logo1.svg"} />
+      <nav>
+        <a className="black1" href=""><h4>Home</h4></a>
+        <a className="black0" href=""><h4>Back-office</h4></a>
+        <a className="black1" href=""><h4>Profile</h4></a>
+        <a className="black2" href=""><h4>Companies</h4></a>
+        <a className="black3" href=""><h4>Offers</h4></a>
+      </nav>
+    </header>
+  )
+}
+
+function Register() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [user_pwd, setUser_pwd] = useState("");
@@ -48,72 +77,11 @@ function Register() {
   )
 }
 
-// class Register extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       firstname: "",
-//       lastname: "",
-//       user_pwd: "",
-//       user_email: "",
-//     }
-
-//   }
-
-//   handleChanges(event) {
-//     this.setState({
-//       firstname: event.state.firstname.value,
-//       lastname: event.state.lastname.value,
-//       user_pwd: event.state.user_pwd.value,
-//       user_email: event.state.user_email.value,
-//     });
-//   }
-
-//   async handleSubmitGET(event) {
-//     event.preventDefault();
-//     const url = "http://localhost:3001/api/v1/user";
-//     const res = await fetch(url, { method: "GET" });
-//     const data = await res.json();
-//     console.log(data);
-//   }
-
-//   async handleSubmitPOST(event) {
-//     event.prenventDefault();
-//     const url = "http://localhost:3001/api/v1/user";
-//     console.log(event);
-
-//     //   try{
-//     //     const res = await fetch(url, {
-//     //     method: "POST",
-//     //     headers: {
-//     //       "Content-Type": "application/json",
-//     //     },
-//     //     body: event.JSON.stringify(),
-//     //   })
-//     //     console.log(res);
-//     //  } catch (error) {
-//     //     console.log("ERROR: " + error);
-//     //   }
-
-//   }
-
-//   render() {
-//     return (
-//       <form onSubmit={this.handleSubmitPOST}>
-//         <label htmlFor="firstname">Firstname</label> <br />
-//         <input type="text" name="firstname" id="firstname" placeholder="firstname" value={this.state.firstname} onChange={this.handleChanges} /> <br />
-//         <label htmlFor="lastname">Lastname</label> <br />
-//         <input type="text" name="lastname" id="lastname" placeholder="lastname" onChange={this.handleChanges} /> <br />
-//         <label htmlFor="user_email">Email address</label> <br />
-//         <input type="text" name="user_email" id="user_email" placeholder="user_email" onChange={this.handleChanges} /> <br />
-//         <label htmlFor="user_pwd">Password</label> <br />
-//         <input type="text" name="user_pwd" id="user_pwd" placeholder="user_pwd" onChange={this.handleChanges} /> <br />
-//         <button>Register</button>
-//       </form>
-//     )
-//   }
-
-// }
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Register />);
+root.render(
+  <React.Fragment>
+    <Header/>
+    <Bo_listing/>
+    <Register/>
+  </React.Fragment>
+)
