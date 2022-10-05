@@ -1,13 +1,5 @@
 import "./css/back-office.css";
 
-function Filter() {
-  return (
-    <aside>
-      BONJOUR
-    </aside>
-  )
-}
-
 function Head_query() {
   return (
     <article>
@@ -15,6 +7,14 @@ function Head_query() {
       <div className="yellow0"></div>
       <input name="query" id="query" className="" placeholder="Enter keywords, the sector, the company’s name..." />
     </article>
+  )
+}
+
+
+function Filter() {
+  return (
+    <aside>
+    </aside>
   )
 }
 

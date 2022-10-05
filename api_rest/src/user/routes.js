@@ -4,9 +4,9 @@ const controller = require('./controller')
 
 const router = Router();
 
-router.get('/users', controller.getUsers);
+router.get('/users/all', controller.getUsers);
 router.post('/users', controller.addUser);
-router.get("/users/:firstname", controller.getUsersByName); // ":" states the variable we will enter in the url.
+router.get("/users/", controller.getUsersByDynamic); // ":" states the variable we will enter in the url.
 router.delete("/users/:user_id", controller.removeUser);
 router.put("/users/:user_id", controller.updateUser);
 
