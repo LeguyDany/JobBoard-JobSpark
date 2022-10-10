@@ -15,13 +15,15 @@ AND offer_language LIKE '%' || $10 || '%'
 AND n_employees > $11 AND n_employees <= $12 ;
 `;
 const checkTitleExists = "SELECT s FROM advertisement_table s WHERE s.offer_name = $1"
-const addOffer = "INSERT INTO advertisement_table (ad_id, offer_name, offer_desc, offer_profile_desc, offer_location, contract_type, salary_min, work_duration, starting_date, reg_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+const addOffer = `
+INSERT INTO advertisement_table (ad_id, offer_name, offer_desc, offer_profile_desc, offer_location, contract_type, salary_min, work_duration, starting_date, reg_date, company_id) 
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
 const addUID = "SELECT uuid_generate_v4();"
-const checkOfferExist = "SELECT s FROM advertisement_table s WHERE s.ad_id = $1"
-const removeOffer = "DELETE FROM advertisement_table WHERE ad_id = $1";
+const checkOfferExist = "SELECT ad_id FROM advertisement_table WHERE ad_id = $1"
+const removeOffer = "DELETE FROM advertisement_table WHERE ad_id = $1;"
 
 const updateOffer = `UPDATE advertisement_table
-SET offer_name = $1, offer_location = $2, contract_type = $3, salary_min = $4, work_duration = $5, experience_years = $6, offer_language = $7, offer_desc=$8, offer_profile_desc=$9, remote_work=$10, starting_date=$11
+SET offer_name = $1, offer_location = $2, contract_type = $3, salary_min = $4, work_duration = $5, experience_years = $6, offer_language = $7, offer_desc=$8, offer_profile_desc=$9, remote_work=$10, starting_date=$11, company_id=$13
 WHERE ad_id = $12`;
 
 const getCompanyInfo = `SELECT DISTINCT company_table.n_employees, company_table.company_name
@@ -29,6 +31,8 @@ FROM advertisement_table
 INNER JOIN company_table ON advertisement_table.company_id = company_table.company_id
 WHERE advertisement_table.company_id = $1;
 `
+
+const getCompanyName = `SELECT company_id FROM company_table WHERE company_mail = $1`;
 
 module.exports = {
     getOffer,
@@ -40,4 +44,5 @@ module.exports = {
     checkOfferExist,
     updateOffer,
     getCompanyInfo,
+    getCompanyName,
 }

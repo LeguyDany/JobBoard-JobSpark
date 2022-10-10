@@ -34,9 +34,9 @@ const addInformation = (req, res) => {
 const getInformationByDynamic = (req, res) => {
     // Filters for the back-office. These are the possible filterning parameters:
     // firstname, lastname, company_name, offer_name, application_date, work_sector
-    const { firstname, lastname, offer_name, work_sector, company_name, application_date_min, application_date_max } = req.query;
+    const { firstname, lastname, offer_name, work_sector, company_name, reg_date_min, reg_date_max } = req.query;
 
-    pool.query(queries.getInformationByDynamic, [offer_name, company_name, firstname, lastname, work_sector, application_date_min, application_date_max], (error, results) => {
+    pool.query(queries.getInformationByDynamic, [offer_name, company_name, firstname, lastname, work_sector, reg_date_min, reg_date_max], (error, results) => {
         if (error) throw error;
         // 200 is the OK status, it means it worked
         res.status(200).json(results.rows);

@@ -91,6 +91,10 @@ code {
   background-color: #FFF;
 }
 
+.test {
+  display:none;
+}
+
 /* ----------------- Fonts ----------------- */
 h1 {
   font-family: "IBM Plex Sans";

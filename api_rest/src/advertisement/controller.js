@@ -24,46 +24,48 @@ const getOffersByDynamic = (req, res) => {
 
 // Send the ad's data to the DB (Title, Desc, Look_Desc, Location, Contract, SalaryMin & SalaryMax, Work duration, Starting Date)
 const addOffer = (req, res) => {
-    const { offer_name, offer_desc, offer_profile_desc, offer_location, contract_type, salary_min, work_duration, starting_date } = req.body;
+    const { offer_name, offer_desc, offer_profile_desc, offer_location, contract_type, salary_min, work_duration, starting_date, company_mail } = req.body;
 
-    pool.query(queries.checkTitleExists, [offer_name], (error, results) => {
-        if (results.rows.length) {
-            res.send("Offer name already exists.");
-        } else (
-            pool.query(queries.addUID, (error, results2) => {
-                if (error) throw error;
-                let uuid = results2.rows[0]["uuid_generate_v4"];
-                let today = functions.getTimeNow();
+    let company_id;
+    pool.query(queries.getCompanyName, [company_mail], (error, results) => {
+        if (!results.rows.length) return res.send("There is no company affiliated to this email address: create one first on our website.");
+        company_id = results.rows[0].company_id;
+    });
 
-                pool.query(queries.addOffer, [uuid, offer_name, offer_desc, offer_profile_desc, offer_location, contract_type, salary_min, work_duration, starting_date, today], (error, results) => {
-                    if (error) throw error;
-                    res.status(201).send("Offer created successfully!");
-                })
-            })
-        )
+    pool.query(queries.addUID, (error, results2) => {
+        if (error) throw error;
+        let uuid = results2.rows[0]["uuid_generate_v4"];
+        let today = functions.getTimeNow();
+
+        pool.query(queries.addOffer, [uuid, offer_name, offer_desc, offer_profile_desc, offer_location, contract_type, salary_min, work_duration, starting_date, today, company_id], (error, results) => {
+            if (error) throw error;
+            res.status(201).send("Offer created successfully!");
+        })
     })
+
+
 }
 
 const removeOffer = (req, res) => {
     const offer_id = req.params.offer_id;
 
     pool.query(queries.checkOfferExist, [offer_id], (error, results) => {
+        if (error) throw error;
+
         // If no results
-        if (!results) {
-            res.send("The offer doesn't exist in the database, could not remove.");
-            // If results
-        } else {
-            pool.query(queries.removeOffer, [offer_id], (error, results) => {
-                if (error) throw error;
-                res.status(200).send("Offer removed successfully.");
-            })
-        }
+        if (!results.rows.length) return res.send("The offer doesn't exist in the database, could not remove.");
+
+        // If results
+        pool.query(queries.removeOffer, [offer_id], (error, results) => {
+            if (error) return res.status(404).send("You must enter an uuid format to remove an offer.");
+            res.status(200).send("Offer removed successfully.");
+        })
     })
 }
 
 const updateOffer = (req, res) => {
     const offer_id = req.params.offer_id;
-    const { offer_name, offer_location, contract_type, salary_min, work_duration, experience_years, offer_language, offer_desc, offer_profile_desc, remote_work, starting_date } = req.body;
+    const { offer_name, offer_location, contract_type, salary_min, work_duration, experience_years, offer_language, offer_desc, offer_profile_desc, remote_work, starting_date , company_id} = req.body;
 
     pool.query(queries.checkOfferExist, [offer_id], (error, results) => {
         // If no results
@@ -71,7 +73,7 @@ const updateOffer = (req, res) => {
             res.send("Offer doesn't exist in the database, could not update.");
             // If results
         } else {
-            pool.query(queries.updateOffer, [offer_name, offer_location, contract_type, salary_min, work_duration, experience_years, offer_language, offer_desc, offer_profile_desc, remote_work, starting_date, offer_id], (error, results) => {
+            pool.query(queries.updateOffer, [offer_name, offer_location, contract_type, salary_min, work_duration, experience_years, offer_language, offer_desc, offer_profile_desc, remote_work, starting_date, offer_id, company_id], (error, results) => {
                 if (error) throw error;
                 res.status(200).send("Offer updated successfully.");
             });

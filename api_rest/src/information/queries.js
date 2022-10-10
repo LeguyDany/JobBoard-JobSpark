@@ -16,7 +16,7 @@ AND work_sector LIKE '%' || $5 || '%'
 AND application_date > $6 AND application_date <= $7;
 `;
 const checkInformationExists = "SELECT * FROM information_table WHERE user_id = $2 AND ad_id = $1";
-const addInformation = "INSERT INTO information_table (ad_id, user_id, application_date, information_id) VALUES ($1, $2, $3, $4)";
+const addInformation = "INSERT INTO information_table (ad_id, user_id, reg_date, information_id) VALUES ($1, $2, $3, $4)";
 const addUID = "SELECT uuid_generate_v4();"
 const removeInformation = "DELETE FROM information_table WHERE information_id = $1";
 const checkApplicationExist = "SELECT * FROM information_table WHERE information_id = $1"

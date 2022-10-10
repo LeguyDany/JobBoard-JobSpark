@@ -1,9 +1,9 @@
 // Tells what happens depending on the request (post, delete, get...).
 const { Router } = require('express');
-const functions = require('./functions');
+const controller = require('./controller');
 
 const router = Router();
 
-router.post('/login/', functions.createToken);
+router.post('/login/', controller.createToken);
 
 module.exports = router;

@@ -10,7 +10,9 @@ function Head_query() {
   )
 }
 
-
+function query_total_results() {
+  
+}
 function Filter() {
   return (
     <aside>

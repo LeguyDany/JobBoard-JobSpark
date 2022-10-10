@@ -75,7 +75,7 @@ const updateUser = (req, res) => {
             res.send("User doesn't exist in the database, could not update.");
         } else {
             pool.query(queries.updateUser, [firstname, lastname, user_pwd, age, location, user_email, user_phone, user_website, user_linkedin, user_social, newsletter, resume, id], (error, results) => {
-                if (error) throw error;
+                if (error) throw error; 
                 res.status(200).send("User updated successfully.");
             })
         }
