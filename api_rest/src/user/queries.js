@@ -9,8 +9,8 @@ const checkUserExist = "SELECT s FROM user_table s WHERE s.user_id = $1";
 const removeUser = "DELETE FROM user_table WHERE user_id = $1";
 
 const updateUser = `UPDATE user_table 
-SET firstname = $1, lastname = $2, user_pwd=$3, age=$4,location=$5, user_email=$6, user_phone=$7, user_website=$8, user_linkedin=$9, user_social=$10, newsletter=$11, resume=$12
-WHERE user_id = $13`;
+SET firstname = $1, lastname = $2, user_pwd=$3, age=$4,location=$5, user_email=$6, user_phone=$7, user_website=$8, user_linkedin=$9, user_social=$10, newsletter=$11, resume=$12, profile_pic=$13
+WHERE user_id = $14`;
 
 module.exports = {
     getUsers,

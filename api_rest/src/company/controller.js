@@ -70,8 +70,6 @@ const updateCompany = (req, res) => {
     const id = req.params.company_id;
     const { company_name, company_desc, n_employees, hq_location, work_sector, company_vip, company_pic, company_phone, language, company_social, company_mail, company_banner } = req.body;
 
-    console.log(n_employees);
-
     pool.query(queries.checkCompanyExist, [id], (error, results) => {
         if (!results.rows.length) {
             res.send("Copmany doesn't exist in the database, could not update.");
