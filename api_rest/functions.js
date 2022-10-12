@@ -2,12 +2,36 @@ var LocalStorage = require('node-localstorage').LocalStorage,
     localStorage = new LocalStorage('./JobSpark_localStorage');
 require("dotenv").config()
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 
 // =================================== Functions ===================================
 function getTimeNow() {
     let date = new Date();
     date.setTime(date.getTime())
     return date.toUTCString()
+}
+
+function sendMail(to, subject, message) {
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: "leguy.work@gmail.com",
+            pass:'pmnhumvuibpilznf'
+        }
+    });
+
+    try {
+        transporter.sendMail({
+            from: "leguy.work@gmail.com",
+            to: to,
+            subject: subject,
+            text: message,
+        });
+
+    } catch (error) {
+        return error;
+    }
 }
 
 // =================================== Middlewares ===================================
@@ -26,7 +50,7 @@ function verify(req, res, next) {
             user_type: decrypt_token.user_type,
             user_email: decrypt_token.user_email
         }
-        
+
         next();
 
         // Login session expired
@@ -47,6 +71,7 @@ function checkRightsLv2(req, res, next) {
 
 module.exports = {
     getTimeNow,
+    sendMail,
     verify,
     checkRightsLv1,
     checkRightsLv2,

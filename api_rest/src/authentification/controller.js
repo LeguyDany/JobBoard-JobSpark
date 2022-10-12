@@ -21,6 +21,25 @@ function createToken(req, res) {
     });
 };
 
+function forgot_pass(req, res) {
+    try {
+        const { email, firstname } = req.body;
+        functions.sendMail(email, "JobSpark - Generate a new password", ```
+        Hello ${firstname},
+
+        Here is a link to reset your password. Make sure to never share this password with anyone else.
+
+        Best regards,
+
+        JobSpark's staff
+        ```);
+
+    } catch (error) {
+        res.status(400).send("Error:" + error)
+    }
+}
+
 module.exports = {
     createToken,
+    forgot_pass,
 };

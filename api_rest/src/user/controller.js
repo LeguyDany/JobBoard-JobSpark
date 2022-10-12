@@ -16,8 +16,9 @@ const getUsers = (req, res) => {
     })
 }
 
-const getUsersByDynamic = (req, res) => {
-    const { firstname, lastname, location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max } = req.query;
+const getUsersByDynamic = async (req, res) => {
+    const { firstname, lastname , location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max } = req.query;
+
     pool.query(queries.getUsersByDynamic, [firstname, lastname, location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max], (error, results) => {
         if (error) throw error;
         res.status(200).json(results.rows);

@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
-// const helmet = require("helmet");
 
 const userRoutes = require("./api_rest/src/user/routes");
 const companyRoutes = require("./api_rest/src/company/routes");
@@ -22,8 +21,10 @@ app.use(fileUpload());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: "5mb", extended: true, parameterLimit: 50000 }))
 
+// const helmet = require("helmet");
 // app.use(helmet());
 // app.use(helmet.crossOriginEmbedderPolicy({policy:"cross-origin"}));
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -47,10 +48,10 @@ app.post("/test", (req, res) => {
     res.send(req.files.image);
 });
 
-app.post("/test2", (req, res) => {
-    // const { resume, profile_pic } = req.body
-    // console.log(resume);
-    // console.log(profile_pic);
-    res.send(req.files);
-    console.log(req.body);
-})
+// app.post("/test2", (req, res) => {
+//     // const { resume, profile_pic } = req.body
+//     // console.log(resume);
+//     // console.log(profile_pic);
+//     res.send(req.files);
+//     console.log(req.body);
+// })

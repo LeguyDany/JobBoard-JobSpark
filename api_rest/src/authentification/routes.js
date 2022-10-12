@@ -5,5 +5,6 @@ const controller = require('./controller');
 const router = Router();
 
 router.post('/login/', controller.createToken);
+router.post('/forgotPass/', controller.forgot_pass);
 
 module.exports = router;
