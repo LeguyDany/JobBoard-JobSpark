@@ -18,7 +18,6 @@ import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff2";
 import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff";
 import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff2";
 
-import Bo_listing from "./back-office.js";
 import { render } from '@testing-library/react';
 import { json } from 'mathjs';
 
@@ -283,7 +282,6 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.Fragment>
     <Header />
-    <Bo_listing />
     <Register />
   </React.Fragment>
 )
