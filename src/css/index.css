@@ -40,6 +40,7 @@ code {
 /* ================= Graphic charter ================= */
 /* ----------------- Colors ----------------- */
 :root {
+  --red0: rgb(255, 44, 44);
   --yellow0: #FADA05;
   --yellow1: #f7e97c;
   --black0: #202530;
@@ -191,8 +192,8 @@ body {
 
 /* ----------------- footer ----------------- */
 footer {
- color: white;
- }
+  color: white;
+}
 
 .footer {
   width: 100%;
@@ -202,20 +203,22 @@ footer {
   margin-top: 0px;
 }
 
-.shrink0 { flex-shrink: 0; }
+.shrink0 {
+  flex-shrink: 0;
+}
 
 /* --------------- Other ----------------- */
 
 hr.jsyellow {
-width: 100%;
-border: 2px solid var(--yellow0);
-border-radius: 0px;
+  width: 100%;
+  border: 2px solid var(--yellow0);
+  border-radius: 0px;
 }
 
 hr.jswhite {
-width: 90%;
-border: 2px solid var(--white);
-border-radius: 0px;
+  width: 90%;
+  border: 2px solid var(--white);
+  border-radius: 0px;
 }
 
 hr.filterhr {
@@ -261,29 +264,26 @@ a.whitelink {
 
 
 .container {
-
-display: flex;
-justify-content: center;     
-height: 100%;
-margin-bottom: 0px;
-
+  display: flex;
+  justify-content: center;
+  height: 100%;
 }
 
 .row {
-display: flex;
-justify-content: center;
-height: 100%;
-flex-direction: row;
-gap: 20px;
-padding: 50px 50px;
-flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  flex-direction: row;
+  gap: 20px;
+  padding: 50px 50px;
+  flex-wrap: wrap;
 }
 
 .col {
-display: flex;
-justify-content: center;
-height: 100%;
-flex-direction: column;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
 }
 
 /* --------------- special pages ----------------- */
@@ -323,6 +323,7 @@ aside form {
 aside h2 {
   margin-bottom: 0px;
 }
+
 /* --------------- footer ------------------ */
 
 .footer-row {
@@ -331,7 +332,7 @@ aside h2 {
   height: 100%;
   flex-direction: row;
   gap: 20px;
-  }
+}
 
 .col-footerleft {
   display: flex;
@@ -348,21 +349,21 @@ aside h2 {
 }
 
 .col-footer {
-display: flex;
-text-align: left;
-flex-direction: column;
-flex: 0 0 28%;
-margin: 0 1%;
-text-decoration: none;
-line-height: 1.5;
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  flex: 0 0 28%;
+  margin: 0 1%;
+  text-decoration: none;
+  line-height: 1.5;
 }
 
 .col-copyright {
-display: flex;
-justify-content: center;
-height: 100%;
-flex-direction: column;
-text-align: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  text-align: center;
 }
 
 p.footertext {
@@ -373,18 +374,19 @@ p.footertext {
 
 /* --------------- Login & Connection Page --------------- */
 
-.image { 
-/* flex:1 1 auto; */
-flex-grow:1;
-flex-shrink:1;
-margin-bottom: 0px;
+.container>img{
+  width: 50vw;
+  object-fit: cover;
 }
-  
-.logininput { 
-/* flex:1 1 auto; */
-flex-grow:1;
-line-height: 3;
-margin-bottom: 0px;
+
+.logininput {
+  flex-grow: 1;
+  line-height: 3;
+  padding: 30px;
+}
+
+#warning {
+  color: var(--red0);
 }
 
 /* --------------- Listing ------------------ */
@@ -562,17 +564,17 @@ article {
   background-color: var(--black0);
 }
 
-article > h1 {
+article>h1 {
   color: var(--white);
 }
 
-article > div {
+article>div {
   width: 200px;
   transform: translateY(-20px);
   height: 5px;
 }
 
-article > input {
+article>input {
   width: 60vw;
   max-width: 600px;
   font-size: 20px;
@@ -588,10 +590,12 @@ article > input {
   outline: none;
   color: var(--black0);
 }
-article > input:focus {
+
+article>input:focus {
   transition: .4s;
   border-bottom: solid 4px var(--yellow0);
 }
+
 ::placeholder {
   color: var(--black4);
 }
@@ -619,17 +623,17 @@ article > input:focus {
 
 .text-input {
   width: 30vw;
-    max-width: 600px;
-    font-size: 20px;
-    padding: 12px;
-    padding-left: 12px;
-    background-repeat: no-repeat;
-    background-position: 14px 50%;
-    background-size: 24px 24px;
-    border: none;
-    transition: .4s;
-    outline: solid 2px;
-    color: var(--black0);
+  max-width: 600px;
+  font-size: 20px;
+  padding: 12px;
+  padding-left: 12px;
+  background-repeat: no-repeat;
+  background-position: 14px 50%;
+  background-size: 24px 24px;
+  border: none;
+  transition: .4s;
+  outline: solid 2px;
+  color: var(--black0);
 }
 
 .password-info {
@@ -642,12 +646,12 @@ article > input:focus {
   display: none;
 }
 
-.password-field:focus ~ .password-info {
+.password-field:focus~.password-info {
   display: flex;
   transition: 2s;
 }
 
-.password-conf-field:focus ~ .password-confirmation {
+.password-conf-field:focus~.password-confirmation {
   display: block;
   transition: 2s;
 }
@@ -655,22 +659,24 @@ article > input:focus {
 
 .newsletter-input {
   width: 30vw;
-    max-width: 600px;
-    font-size: 20px;
-    padding: 12px;
-    padding-left: 12px;
-    background-repeat: no-repeat;
-    background-position: 14px 50%;
-    background-size: 24px 24px;
-    border: none;
-    border-bottom: solid 2px var(--yellow0);
-    transition: .4s;
-    outline: solid 2px;
-    color: var(--black0);
+  max-width: 600px;
+  font-size: 20px;
+  padding: 12px;
+  padding-left: 12px;
+  background-repeat: no-repeat;
+  background-position: 14px 50%;
+  background-size: 24px 24px;
+  border: none;
+  border-bottom: solid 2px var(--yellow0);
+  transition: .4s;
+  outline: solid 2px;
+  color: var(--black0);
 }
+
 .newsletter-input:focus {
   border-bottom: solid 6px var(--yellow0);
 }
+
 /* ----------------- Buttons ----------------- */
 
 button {
@@ -685,13 +691,13 @@ button {
   color: black;
   background-color: transparent;
   border: solid 2px var(--yellow0);
-  transition: 1s;
+  transition: .4s;
 }
 
 button:hover {
   background-color: var(--yellow0);
-  color: black;
-  transition: .1s;
+  color: white;
+  transition: .4s;
 }
 
 button:active {
@@ -703,15 +709,15 @@ button:active {
 .newsletter-button {
   width: 100px;
   margin-top: 20px;
-    font-size: 20px;
-    padding: 12px;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    color: var(--white);
-    background-color: var(--black0);
-    border: solid 2px var(--yellow0);
-    transition: 1s;
+  font-size: 20px;
+  padding: 12px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  color: var(--white);
+  background-color: var(--black0);
+  border: solid 2px var(--yellow0);
+  transition: 1s;
 }
 
 .newsletter-button:hover {
@@ -735,4 +741,3 @@ button:active {
 
 
 /* ----------------- Slider ----------------- */
-

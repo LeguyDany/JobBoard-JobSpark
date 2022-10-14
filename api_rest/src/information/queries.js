@@ -15,8 +15,15 @@ AND lastname LIKE '%' || $4 || '%'
 AND work_sector LIKE '%' || $5 || '%'
 AND application_date > $6 AND application_date <= $7;
 `;
-const checkInformationExists = "SELECT * FROM information_table WHERE user_id = $2 AND ad_id = $1";
-const addInformation = "INSERT INTO information_table (ad_id, user_id, reg_date, information_id) VALUES ($1, $2, $3, $4)";
+
+const getCompanyEmail = `SELECT company_table.company_mail, advertisement_table.offer_name
+FROM information_table
+INNER JOIN advertisement_table ON information_table.ad_id = advertisement_table.ad_id
+INNER JOIN company_table ON advertisement_table.company_id = company_table.company_id
+WHERE information_id = $1;
+`;
+
+const addInformation = "INSERT INTO information_table (ad_id, reg_date, information_id, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website, subject, resume) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
 const addUID = "SELECT uuid_generate_v4();"
 const removeInformation = "DELETE FROM information_table WHERE information_id = $1";
 const checkApplicationExist = "SELECT * FROM information_table WHERE information_id = $1"
@@ -25,10 +32,10 @@ const updateInformation = "UPDATE information_table SET information_name = $1, s
 module.exports = {
     getInformation,
     getInformationByDynamic,
-    checkInformationExists,
     addInformation,
     removeInformation,
     updateInformation,
     addUID,
     checkApplicationExist,
+    getCompanyEmail,
 }

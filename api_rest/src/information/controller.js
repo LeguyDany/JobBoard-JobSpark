@@ -1,7 +1,7 @@
 
 const pool = require('../../db');
 const queries = require('./queries');
-const functions = require('../../functions')
+const functions = require('../../functions');
 
 const getInformation = (req, res) => {
     pool.query(queries.getInformation, (error, results) => {
@@ -10,24 +10,37 @@ const getInformation = (req, res) => {
     })
 }
 
-const addInformation = (req, res) => {
-    const { ad_id, user_id } = req.body;
+const applyOffer = (req, res) => {
+    const { ad_id, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website } = req.body;
+    const { resume } = req.files;
 
-    pool.query(queries.checkInformationExists, [ad_id, user_id], (error, results) => {
-        if (results.rows.length) {
-            res.send("An user already registered to this offer.");
-        } else (
-            pool.query(queries.addUID, (error, results2) => {
-                if (error) throw error;
-                let uuid = results2.rows[0]["uuid_generate_v4"];
-                let today = functions.getTimeNow();
+    if(!apply_email || !firstname || !lastname ) return res.send("Some fields must be filled.");
+    if(resume.size > 5000000) return res.status(413).send("File too big.");
 
-                pool.query(queries.addInformation, [ad_id, user_id, today, uuid], (error, results) => {
-                    if (error) throw error;
-                    res.status(201).send("Application to the offer sent!");
-                })
-            })
-        )
+    pool.query(queries.addUID, (error, results) => {
+        if (error) throw error;
+        let uuid = results.rows[0]["uuid_generate_v4"];
+        let today = functions.getTimeNow();
+
+        pool.query(queries.addInformation, [ad_id, today, uuid, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website, "Job apply", resume.data], (error, results) => {
+            if (error) throw error;
+
+            pool.query(queries.getCompanyEmail, [uuid], (error, results) => {
+                if (error) throw (error);
+                const message = `
+                <p>Hello, <br><br>
+
+                A user name <b>${firstname}</b> with the address email <b>${apply_email}</b> has sent an application to your job offer called <b>${results.rows[0].offer_name}</b>. Don't hesitate to review this offer! <br><br>
+
+                Best regards, <br><br>
+
+                JobSpark's staff
+                `;
+                functions.sendMail(results.rows[0].company_mail, "JobSpark: User apply - "+ results.rows[0].offer_name, message)
+                res.status(201).send("Application to the offer sent!");
+            });
+            
+        })
     })
 }
 
@@ -69,10 +82,11 @@ const updateInformation = (req, res) => {
     })
 }
 
+
 module.exports = {
     getInformation,
     getInformationByDynamic,
     removeInformation,
     updateInformation,
-    addInformation,
+    applyOffer,
 }

@@ -3,6 +3,7 @@
 const pool = require('../../db');
 const queries = require('./queries');
 const functions = require('../../functions')
+const bcrypt = require('bcrypt');
 
 // Reads all users from the db
 const getUsers = (req, res) => {
@@ -17,7 +18,7 @@ const getUsers = (req, res) => {
 }
 
 const getUsersByDynamic = async (req, res) => {
-    const { firstname, lastname , location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max } = req.query;
+    const { firstname, lastname, location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max } = req.query;
 
     pool.query(queries.getUsersByDynamic, [firstname, lastname, location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max], (error, results) => {
         if (error) throw error;
@@ -28,25 +29,29 @@ const getUsersByDynamic = async (req, res) => {
 const addUser = (req, res) => {
     const { firstname, lastname, user_email, user_pwd } = req.body;
 
-    // check if email exists
-    pool.query(queries.checkEmailExists, [user_email], (error, results) => {
-        if (results.rows.length) {
-            res.send("Email already exists.");
-        } else (
-            // Creates a new uuid for the user
-            pool.query(queries.addUID, (error, results2) => {
-                if (error) throw error;
-                let uuid = results2.rows[0]["uuid_generate_v4"];
-                let today = functions.getTimeNow();
+    bcrypt.hash(user_pwd, 10, (error, result) => {
+        const hashed_pass = result;
 
-                // Add user to db
-                pool.query(queries.addUser, [uuid, firstname, lastname, user_email, user_pwd, today], (error, results) => {
+        // check if email exists
+        pool.query(queries.checkEmailExists, [user_email], (error, results) => {
+            if (results.rows.length) {
+                res.send("Email already exists.");
+            } else (
+                // Creates a new uuid for the user
+                pool.query(queries.addUID, (error, results) => {
                     if (error) throw error;
-                    res.status(201).send("User created successfully!");
+                    let uuid = results.rows[0]["uuid_generate_v4"];
+                    let today = functions.getTimeNow();
+
+                    // Add user to db
+                    pool.query(queries.addUser, [uuid, firstname, lastname, user_email, hashed_pass, today], (error, results) => {
+                        if (error) throw error;
+                        res.status(201).send("User created successfully!");
+                    })
                 })
-            })
-        )
-    })
+            )
+        })
+    });
 }
 
 const removeUser = (req, res) => {

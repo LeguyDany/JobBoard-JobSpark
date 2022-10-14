@@ -1,280 +1,181 @@
-// Importing React
-import React, { Profiler } from 'react';
+// JS and React modules import
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { useState, useEffect } from 'react';
-import { Buffer } from "buffer";
-
-// Importing other libraries
+import './css/index.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 import axios from 'axios';
 
-// Importing modules
-import './css/index.css';
+// Render page functions import
+import {
+  Register,
+  Login,
+  Recovery,
+  ResetPass,
+  Verify,
+  Logout,
+} from "./connection";
+import Bo_listing from './back-office';
+import JobOffers from './job-listing';
 
-// Importing other things
-import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.woff";
-import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.woff2";
-import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff";
-import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Medium.woff2";
-import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff";
-import "./assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.woff2";
+// Logo and stuff
+import Logo from './Logo1.svg';
+import LogoWhite from './Logo1w.svg';
+import Instagram from './assets/icons/instagram-line.svg';
+import LinkedIn from './assets/icons/linkedin-fill.svg';
+import Twitter from './assets/icons/twitter-fill.svg';
+import Youtube from './assets/icons/youtube-line.svg';
 
-import { render } from '@testing-library/react';
-import { json } from 'mathjs';
+// URL to the DB, as a global variable so only needs to be changed once
+const dburl = "https://a635-2a02-8440-3440-5136-c0c5-1b61-64e0-ce05.eu.ngrok.io/";
+export default dburl;
 
-// axios.defaults.headers.common['ngrok-skip-browser-warning'] = '';
-// axios.defaults.headers.common['Content-Type'] = 'application/json';
-// axios.defaults.headers.common['Accept'] = 'application/json';
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+// ignore ngrock warnings
+axios.defaults.headers.common['ngrok-skip-browser-warning'] = true;
 
 function Header() {
+
+  const [header_content, setHeadercontent] = useState({
+    content: [["Home", "black0"], ["Login", "black1"], ["Register", "black2"], ["Companies", "black3"], ["Offers", "black4"]]
+  });
+
+  const checkUserType = async () => {
+    axios.defaults.headers.common['Authorization'] = `Bearer ` + localStorage.getItem("token");
+    const url = dburl + "auth/user_type";
+    const res = await axios.get(url);
+    return res.data;
+  }
+
+  const designHeader = (user_type) => {
+    switch (user_type) {
+      case "ADM":
+        setHeadercontent({
+          "content": [["Logout", "black0"], ["Profile", "black1"], ["Companies", "black2"], ["Offers", "black3"], ["Back-office", "black4"]]
+        });
+        break
+      case "USR":
+        setHeadercontent({
+          "content": [["Home", "black0"], ["Profile", "black1"], ["Companies", "black2"], ["Offers", "black3"], ["Logout", "black4"]]
+        });
+        break;
+      case "RCT":
+        setHeadercontent({
+          "content": [["Home", "black0"], ["Profile", "black1"], ["Companies", "black2"], ["Offers", "black3"], ["Logout", "black4"]]
+        });
+        break;
+    }
+  }
+
+  useEffect(() => {
+    const loadData = async () => {
+      const user = await checkUserType();
+      designHeader(user);
+    }
+    loadData()
+  }, [])
+
   return (
     <header>
-      <img src={"./Logo1.svg"} />
+      <img src={Logo} />
       <nav>
-        <a className="black1" href=""><h4>Home</h4></a>
-        <a className="black0" href=""><h4>Back-office</h4></a>
-        <a className="black1" href=""><h4>Profile</h4></a>
-        <a className="black2" href=""><h4>Companies</h4></a>
-        <a className="black3" href=""><h4>Offers</h4></a>
+        {header_content.content.map((page) => (
+          <a key={page} className={page[1]} href={"/" + page[0]} > <h4>{page[0]}</h4></a>
+        ))}
       </nav>
     </header>
   )
 }
 
-function Register() {
-  const [email, setEmail] = useState("dany.leguy@epitech.eu");
-  const [password, setPassword] = useState("123654789");
-  const [resume, setResume] = useState("");
-  const [profile_pic, setProfile_pic] = useState("");
-  const [preview_pp, setPreviewpp] = useState("");
-  const [preview_resume, setPreviewresume] = useState("");
-  const [get_resume, setGet_resume] = useState("");
-  let val;
-
-  const convert_base64 = (hex) => {
-    return Buffer.from(hex).toString("base64");
-  }
-
-  const refresh_header = (option = null) => {
-    return {
-      headers: {
-        'Authorization': `Bearer ` + localStorage.getItem("token"),
-        option
-      }
-    }
-  }
-
-  let header = refresh_header()
-
-  const handleSubmitGET = async (event) => {
-    event.preventDefault();
-    const url_variables = new URLSearchParams({
-      firstname: "ogm",
-      lastname: "ogm",
-      location: "Earth",
-      newsletter: "false",
-      user_type: "USR",
-      age_min: "0",
-      age_max: "100",
-      reg_date_min: "2021-01-01",
-      reg_date_max: "2023-01-01"
-    });
-    const url_query = url_variables.toString();
-
-    const url = "http://localhost:3001/api/users/?" + url_query;
-    const res = await axios.get(url, header);
-
-    const buffer = res.data[0].resume.data;
-
-    return buffer;
-  }
-
-  // Logout
-  const logout = async (event) => {
-    event.preventDefault();
-    localStorage.clear();
-  }
-
-  // Connection
-  const handleSubmitPOST = async (new_state) => {
-    const url = "http://localhost:3001/auth/login";
-    new_state.preventDefault();
-    const data = new FormData(new_state.target);
-    const form_json = Object.fromEntries(data);
-
-    const res = await axios.post(url, form_json);
-    console.log(res.data);
-
-    localStorage.setItem("token", res.data.token)
-    header = refresh_header();
-  }
-
-  // Add
-  const addCompanies = async (new_state) => {
-    const url = "http://localhost:3001/api/information/";
-    new_state.preventDefault();
-    const form_json = {
-      "ad_id": "c4e54341-0a51-42f8-9cee-1f39719b4a6b",
-      "user_id": "6da6242d-d001-4662-a59c-19225047d23a"
-    }
-
-    const res = await axios.post(url, form_json, header);
-    console.log(res.data)
-  }
-
-  // Delete
-  const delCompanies = async (new_state) => {
-    const comp_id = "0345972a-ef67-48c7-8670-0a8fd86c937e";
-    const url = "http://localhost:3001/api/information/" + comp_id;
-    new_state.preventDefault();
-
-    const res = await axios.delete(url, header);
-    console.log(res.data)
-  }
-
-  // Update
-  const updateCompanies = async (new_state) => {
-    const comp_id = "bc8dbf2d-a0aa-43c5-a397-58edb52ac245";
-    const url = "http://localhost:3001/api/users/" + comp_id;
-    new_state.preventDefault();
-
-    var formData = new FormData();
-    var imagefile = document.querySelector("#image");
-    formData.append("profile_pic", imagefile.files[0]);
-    var imagefile = document.querySelector("#resume");
-    formData.append("resume", imagefile.files[0]);
-
-    const form_json = {
-      "firstname": "Frogman_95",
-      "lastname": "Figaro",
-      "age": "99",
-      "newsletter": false,
-      "location": "Earth",
-      "user_email": "Drag_monster95@gmail.com",
-      "user_phone": "0629102332",
-      "user_website": "Francis-Lemont.org",
-      "user_linkedin": "https://linkedin.com/Francis-Lemont",
-      "user_social": "",
-      "user_pwd": "azertyuiop",
-    }
-    for (const item in form_json) {
-      formData.append(item, form_json[item]);
-    }
-
-    const res = await axios.put(url, formData, {
-      headers: {
-        'Authorization': `Bearer ` + localStorage.getItem("token"),
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-
-    console.log(res.data);
-
-  }
-
-  const preview_image = (event) => {
-    const test = URL.createObjectURL(event.target.files[0])
-    return test
-  }
-
-  const load_image = async (event) => {
-    event.preventDefault();
-
-    var formData = new FormData();
-    var imagefile = document.querySelector("#" + event.target.id);
-    formData.append("image", imagefile.files[0]);
-
-    const api = "http://localhost:3001/test";
-    const res = await axios.post(api, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-
-    const buffer = res.data;
-
-    return buffer;
-  }
-
-  // // How to send files / images to the back.
-  // const see_files = async (event) => {
-  //   event.preventDefault();
-
-  //   var formData = new FormData();
-  //   var imagefile = document.querySelector("#image");
-  //   formData.append("image", imagefile.files[0]);
-  //   var imagefile = document.querySelector("#resume");
-  //   formData.append("resume", imagefile.files[0]);
-  //   formData.append("firstname", "test");
-
-  //   const api = "http://localhost:3001/test2";
-  //   const res = await axios.post(api, formData, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   });
-
-  //   console.log(res.data);
-
-  // }
-
+// à refaire: Footer (parceque c'est pas aligné)
+function Footer() {
   return (
-    <section>
-      <form onSubmit={async e => handleSubmitPOST(e)}>
-        <label htmlFor="user_email">User email</label> <br />
-        <input type="text" name="user_email" id="user_email" placeholder="email" value={email}
-          onChange={e => setEmail(e.target.value)} /> <br />
-        <label htmlFor="user_pwd">Lastname</label> <br />
-        <input type="text" name="user_pwd" id="user_pwd" placeholder="password" value={password}
-          onChange={e => setPassword(e.target.value)} /> <br />
-        <button>Register</button>
-      </form>
+    <footer>
+      <div className="footer black0">
+        <div className="row">
+          <div className='col-footer'>
+            <img className='img-center' width="50%" src={LogoWhite} />
+            <h3>About</h3>
+            <hr className="jsyellow"></hr>
+            <a className="whitelink" href="/offers">Job Offers</a>
+            <a className="whitelink" href="">Internship Offers</a>
+            <a className="whitelink" href="/login">Login</a>
+            <a className="whitelink" href="/register">Register</a>
+          </div>
+          <div className='col-footer'>
+            <div className='center'>
+              <a href="https://www.instagram.com/"><img className='img-center img-footer' width="20%" src={Instagram} /></a>
+              <a href="https://www.linkedin.com/"><img className='img-center img-footer' width="20%" src={LinkedIn} /></a>
+              <a href="https://www.twitter.com/"><img className='img-center img-footer' width="20%" src={Twitter} /></a>
+              <a href="https://www.youtube.com/"><img className='img-center img-footer' width="20%" src={Youtube} /></a>
+            </div>
+            <h4>Contact us</h4>
+            <hr className="jsyellow"></hr>
+            <a className="whitelink" href="mailto:Contact@jobspark.com">Contact@jobspark.com</a>
+            <a className="whitelink" href="telto:+330110101010">01 10 10 10 10</a>
+            <a className="whitelink" href="">55 Rue du Faubourg Saint-Honoré, 75008 Paris</a>
+          </div>
+          <div className='col-footer'>
+            <h4>Subscribe to our Newsletter</h4>
+            <hr className="jsyellow"></hr>
+            <p className="footertext">
+              You'll receive fake job offers, constant spam, stuff you generally don't want, death threats, and more!
+              also we hide the 'unsubscribe' in the weirdest place so good luck with that.
+            </p>
+            <input className="newsletter-input" type="text" name="newsletter_mail" id="newsletter_mail" placeholder="Email"></input>
+            <button className="newsletter-button" type="button">Send</button>
+          </div>
+        </div>
+        <div className='col-copyright'>
+          <hr className="jswhite"></hr>
+          <p className="footertext">
+            Copyright @ Job Spark 2022 - Career guidance website
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}
 
-      <form onSubmit={async e => {
-        setGet_resume(await handleSubmitGET(e));
-      }}>
-        <button>Get</button>
-      </form>
-      <embed src={`data:application/pdf;base64,${convert_base64(get_resume)}`} width="500px" height="400px" />
+function Home() {
+  return (
+    <div>
+      <h1>Home</h1>
+      <p>wip</p>
+    </div>
+  )
+}
 
-      <form onSubmit={logout}>
-        <button>Delete tokens / logout</button>
-      </form>
+function Error404() {
+  return (
+    <div className="errorbox">
+      <h2 className="errorh2">OwO what's this?</h2>
+      <h1>ERROR</h1>
+      <h1 className="errorh1">404</h1>
+      <p>Oh no! we encountewed a pwobwem whiwe woading youw page. Check if you'we on the cowwect page ow contact a website administwatow.</p>
+    </div>
+  )
+}
 
-      <form onSubmit={addCompanies}>
-        <button>Add</button>
-      </form>
-
-      <form onSubmit={delCompanies}>
-        <button>Delete</button>
-      </form>
-
-      <form onSubmit={updateCompanies}>
-        <button>Update</button>
-      </form>
-
-
-      <form>
-        <h1>UPLOAD RESUME</h1>
-        <input type="file" name="resume" id="resume" onChange={async e => {
-          setResume(await load_image(e));
-          setPreviewresume(preview_image(e))
-        }} /> <br />
-        {/* <embed src={`data:application/pdf;base64,${convert_base64(preview_resume)}`} width="500px" height="400px" /> */}
-        <embed src={preview_resume} width="500px" height="400px" />
-
-        <h1>UPLOAD image</h1>
-        <input type="file" name="image" id="image" onChange={async e => {
-          setProfile_pic(await load_image(e));
-          setPreviewpp(preview_image(e))
-        }} /> <br />
-        {/* <img src={`data:image/png;base64,${convert_base64(profile_pic)}`} alt="profile_pic" /> <br /> */}
-        <img src={preview_pp} />
-      </form>
-
-    </section>
-
+function ShowPage() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="*" element={<Error404 />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Logout" element={<Logout />} />
+        <Route path="/Recovery/" element={<Recovery />} />
+        <Route path="/Reset_pass/:token" element={<ResetPass />} />
+        <Route path="/Verify/:token" element={<Verify />} />
+        <Route path="/Back-office" element={<Bo_listing />} />
+        <Route path="/Offers" element={<JobOffers />} />
+      </Routes>
+    </Router>
   )
 }
 
@@ -282,6 +183,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.Fragment>
     <Header />
-    <Register />
+    <ShowPage />
+    <Footer />
   </React.Fragment>
-)
+); 

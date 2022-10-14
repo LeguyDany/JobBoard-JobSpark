@@ -17,16 +17,16 @@ function sendMail(to, subject, message) {
         service: 'gmail',
         auth: {
             user: "leguy.work@gmail.com",
-            pass:'pmnhumvuibpilznf'
+            pass: 'pmnhumvuibpilznf'
         }
     });
-
     try {
+
         transporter.sendMail({
             from: "leguy.work@gmail.com",
             to: to,
             subject: subject,
-            text: message,
+            html: message,
         });
 
     } catch (error) {
@@ -40,7 +40,7 @@ function verify(req, res, next) {
     try {
         // User not logged in
         if (!req.headers.authorization) return next();
-
+        
         // User logged in
         const token = req.headers.authorization.split(' ')[1];
         const decrypt_token = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -48,7 +48,8 @@ function verify(req, res, next) {
         res.locals.user_info = {
             user_id: decrypt_token.user_id,
             user_type: decrypt_token.user_type,
-            user_email: decrypt_token.user_email
+            user_email: decrypt_token.user_email,
+            verified: decrypt_token.verified
         }
 
         next();

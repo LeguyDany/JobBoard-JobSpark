@@ -1,6 +1,9 @@
 // Same as always, give the controller.js room to be readable and not cramped up with queries.
 
-const getOffer = "SELECT * FROM advertisement_table";
+const getOffer = `SELECT advertisement_table.*, company_table.company_name, company_table.n_employees
+FROM advertisement_table
+INNER JOIN company_table ON advertisement_table.company_id = company_table.company_id`;
+
 const getOfferByDynamic = `
 SELECT advertisement_table.*, company_table.n_employees, company_table.company_name 
 FROM advertisement_table 
