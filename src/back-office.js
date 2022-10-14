@@ -1,12 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { useParams, useNavigate } from "react-router-dom";
 import './css/index.css';
 import './css/back_office.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import dburl from './index.js';
-import Select from 'react-select'
-import { render } from '@testing-library/react';
+import { PassThrough } from 'nodemailer/lib/xoauth2';
+
+
 
 function BoSearch() {
   return (
@@ -23,20 +24,46 @@ function Table() {
   const [dataTable, setDataTable] = useState("");
 
   const getTable = async () => {
-    const url = dburl + "api/advertisement/all";
+    const url = dburl + "api/users/all";
     const res = await axios.get(url);
-    // Object.keys(res.data[0]).forEach((key, index) => {
-    //   console.log(key)
-    // })
     setDataTable(res.data);
   }
 
-  const test = (container) => {
-    let cells = [];
+  const create_table_cells_header = (container, type) => {
+    let cells = [React.createElement("th", { key: "Action" }, "Action")];
     for (const item in container) {
-      cells.push(React.createElement("td", {}, item))
+      cells.push(React.createElement("th", { key: item }, item))
     }
     return cells
+  }
+  const create_table_cells_content = (container) => {
+    const id = container[Object.keys(container)[0]]
+    const actions = [
+      React.createElement("a", { key: "See more", href: "See_more/" + id + "/users" }, "See more"),
+      React.createElement('br'),
+      React.createElement("a", { key: "Edit", href: "Edit/" + id }, "Edit"),
+      React.createElement('br'),
+      React.createElement("a", { key: "Remove", href: "Remove/" + id }, "Remove")
+    ]
+    let cells = [React.createElement("td", { key: "action" }, actions)];
+
+
+    for (const item in container) {
+      if (container[item] == null) { container[item] = "—" };
+      if (container[item].length > 40) { container[item] = container[item].substring(0, 35) + "..." }
+
+      cells.push(React.createElement("td", { key: item }, container[item].toString()))
+    }
+    return [cells, id]
+  }
+
+  const create_row = (container) => {
+    let cells = [];
+
+    for (const item in container) {
+      cells.push(React.createElement("tr", { key: item, id: create_table_cells_content(container[item])[1] }, create_table_cells_content(container[item])[0]))
+    }
+    return cells;
   }
 
   useEffect(() => {
@@ -49,29 +76,92 @@ function Table() {
   return (
 
     <section>
-      <table>
 
-        <thead>
-          <tr>
-            {test(dataTable[0]).map()}
-          </tr>
-        </thead>
+      <div className="sectionDB">
+        <table>
 
-      </table>
+          <thead className="tableDB">
+            <tr>
+              {create_table_cells_header(dataTable[0])}
+            </tr>
+          </thead>
+          <tbody>
+            {create_row(dataTable)}
+          </tbody>
+
+        </table>
+      </div>
 
     </section>
   )
 }
 
-function Bo_listing() {
+export function Bo_listing() {
   return (
     <section>
       <BoSearch />
       <Table />
-      <div className="backoffice-container">
-      </div>
     </section>
   )
 }
 
 export default Bo_listing;
+
+export function See_more() {
+
+  const [data, setData] = useState("");
+  const params = useParams();
+
+  const getData = async () => {
+    const url = `${dburl}api/${params["table"]}/${params["id"]}`;
+    const res = await axios.get(url);
+    setData(res.data);
+  }
+
+  const single_row = (container) => {
+    let elements = [];
+    for (const item in container) {
+      elements.push(React.createElement("tr", { key: item },
+        [React.createElement("th", {}, item),
+        React.createElement("td", {}, container[item])]));
+    }
+    return elements;
+  }
+
+  useEffect(() => {
+    const loadData = async () => {
+      await getData();
+    }
+    loadData()
+  }, [])
+
+  return (
+    <section>
+      <div id="Bo_layout">
+        <table>
+          <tbody>
+            {single_row(data[0])}
+          </tbody>
+        </table>
+      </div>
+
+
+
+    </section>
+
+  )
+}
+
+export function Edit() {
+
+  return (
+    <p>Edit</p>
+  )
+}
+
+export function Remove() {
+
+  return (
+    <p>Remove</p>
+  )
+}

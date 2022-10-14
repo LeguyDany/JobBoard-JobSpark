@@ -98,10 +98,20 @@ const updateUser = (req, res) => {
 
 }
 
+const getUserById = async (req, res) => {
+    const id = req.params.id;
+    pool.query(queries.getUserById, [id], (error, results) => {
+        if (error) return res.status(400).send("An error has occured:" + error);
+        if(!results.rows.length) return res.send("No user with this id.")
+        return res.status(200).send(results.rows);
+    });
+}
+
 module.exports = {
     getUsers,
     getUsersByDynamic,
     addUser,
     removeUser,
     updateUser,
+    getUserById,
 }

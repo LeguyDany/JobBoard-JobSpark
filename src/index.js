@@ -18,7 +18,12 @@ import {
   Verify,
   Logout,
 } from "./connection";
-import Bo_listing from './back-office';
+import {
+  Bo_listing,
+  See_more,
+  Edit,
+  Remove,
+} from './back-office';
 import JobOffers from './job-listing';
 
 // Logo and stuff
@@ -173,6 +178,9 @@ function ShowPage() {
         <Route path="/Reset_pass/:token" element={<ResetPass />} />
         <Route path="/Verify/:token" element={<Verify />} />
         <Route path="/Back-office" element={<Bo_listing />} />
+        <Route path="/See_more/:id/:table" element={<See_more />} />
+        <Route path="/Edit/:id" element={<Edit />} />
+        <Route path="/Remove/:id" element={<Remove />} />
         <Route path="/Offers" element={<JobOffers />} />
       </Routes>
     </Router>
