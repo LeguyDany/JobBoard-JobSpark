@@ -17,7 +17,7 @@ const getUsers = (req, res) => {
     })
 }
 
-const getUsersByDynamic = async (req, res) => {
+const getUsersByDynamic = (req, res) => {
     const { firstname, lastname, location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max } = req.query;
 
     pool.query(queries.getUsersByDynamic, [firstname, lastname, location, newsletter, user_type, age_min, age_max, reg_date_min, reg_date_max], (error, results) => {
@@ -98,12 +98,62 @@ const updateUser = (req, res) => {
 
 }
 
-const getUserById = async (req, res) => {
+const getUserById = (req, res) => {
     const id = req.params.id;
     pool.query(queries.getUserById, [id], (error, results) => {
         if (error) return res.status(400).send("An error has occured:" + error);
-        if(!results.rows.length) return res.send("No user with this id.")
+        if (!results.rows.length) return res.send("No user with this id.")
         return res.status(200).send(results.rows);
+    });
+}
+
+const bo_updateUser = (req, res) => {
+    const id = req.params.id;
+    const { user_id, firstname, lastname, age, user_type, wanted_work, location, reg_date, user_email, user_phone, user_website, user_linkedin, user_social, newsletter, verified } = req.body;
+
+    pool.query(queries.checkUserExist, [id], (error, results) => {
+        // If no results
+        if (!results) {
+            res.send("User doesn't exist in the database, could not update.");
+        } else {
+            pool.query(queries.bo_updateUser, [firstname, lastname, age, user_type, wanted_work, location, reg_date, user_email, user_phone, user_website, user_linkedin, user_social, newsletter, verified, id], (error, results) => {
+                if (error) throw error;
+                res.status(200).send("User updated successfully.");
+            })
+        }
+    })
+}
+const bo_addUser = (req, res) => {
+
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
+    }
+
+    const { firstname, lastname, user_email, user_pwd, age, user_type, wanted_work, location, reg_date, user_phone, user_website, user_linkedin, user_social, newsletter, verified } = req.body;
+
+    bcrypt.hash(user_pwd, 10, (error, result) => {
+        const hashed_pass = result;
+
+        // check if email exists
+        pool.query(queries.checkEmailExists, [user_email], (error, results) => {
+            if (results.rows.length) {
+                res.send("Email already exists.");
+            } else (
+                // Creates a new uuid for the user
+                pool.query(queries.addUID, (error, results) => {
+                    if (error) throw error;
+                    let uuid = results.rows[0]["uuid_generate_v4"];
+                    let today = functions.getTimeNow();
+
+                    // Add user to db
+                    pool.query(queries.bo_addUser, [uuid, firstname, lastname, user_email, hashed_pass, age, user_type, wanted_work, location, today, user_phone, user_website, user_linkedin, user_social, newsletter, verified], (error, results) => {
+                        if (error) throw error;
+                        res.status(201).send("User created successfully!");
+                    })
+                })
+            )
+        })
     });
 }
 
@@ -114,4 +164,6 @@ module.exports = {
     removeUser,
     updateUser,
     getUserById,
+    bo_updateUser,
+    bo_addUser,
 }

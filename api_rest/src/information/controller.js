@@ -14,8 +14,8 @@ const applyOffer = (req, res) => {
     const { ad_id, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website } = req.body;
     const { resume } = req.files;
 
-    if(!apply_email || !firstname || !lastname ) return res.send("Some fields must be filled.");
-    if(resume.size > 5000000) return res.status(413).send("File too big.");
+    if (!apply_email || !firstname || !lastname) return res.send("Some fields must be filled.");
+    if (resume.size > 5000000) return res.status(413).send("File too big.");
 
     pool.query(queries.addUID, (error, results) => {
         if (error) throw error;
@@ -36,10 +36,10 @@ const applyOffer = (req, res) => {
 
                 JobSpark's staff
                 `;
-                functions.sendMail(results.rows[0].company_mail, "JobSpark: User apply - "+ results.rows[0].offer_name, message)
+                functions.sendMail(results.rows[0].company_mail, "JobSpark: User apply - " + results.rows[0].offer_name, message)
                 res.status(201).send("Application to the offer sent!");
             });
-            
+
         })
     })
 }
@@ -82,6 +82,47 @@ const updateInformation = (req, res) => {
     })
 }
 
+const getInformationById = async (req, res) => {
+    const id = req.params.id;
+    pool.query(queries.checkApplicationExist, [id], (error, results) => {
+        if (error) return res.status(400).send("An error has occured:" + error);
+        if (!results.rows.length) return res.send("No information with this id.")
+        return res.status(200).send(results.rows);
+    });
+}
+const bo_updateInformation = (req, res) => {
+    const id = req.params.id;
+    const { information_id, reg_date, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website } = req.body;
+
+    pool.query(queries.bo_updateInformation, [information_id, reg_date, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website, id], (error, results) => {
+        if (error) throw error;
+        res.status(200).send("Information updated successfully.");
+    })
+}
+
+const bo_addInformation = (req, res) => {
+    // Adds a row to the information table through the back-office.
+
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "" ) req.body[item] = null
+    }
+
+    const { ad_id, user_id, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website } = req.body;
+
+    // Creates a new uuid for the new information
+    pool.query(queries.addUID, (error, results) => {
+        if (error) throw error;
+        const uuid = results.rows[0]["uuid_generate_v4"];
+        const today = functions.getTimeNow();
+
+        // Adds the row to db
+        pool.query(queries.bo_addInformation, [uuid, ad_id, user_id, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website, today], (error, results) => {
+            if (error) throw error;
+            res.status(201).send("Row added to the table successfully!");
+        })
+    })
+}
 
 module.exports = {
     getInformation,
@@ -89,4 +130,7 @@ module.exports = {
     removeInformation,
     updateInformation,
     applyOffer,
+    getInformationById,
+    bo_updateInformation,
+    bo_addInformation,
 }

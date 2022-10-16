@@ -29,6 +29,13 @@ const removeInformation = "DELETE FROM information_table WHERE information_id = 
 const checkApplicationExist = "SELECT * FROM information_table WHERE information_id = $1"
 const updateInformation = "UPDATE information_table SET information_name = $1, siret = $2 WHERE information_id = $3";
 
+const bo_updateInformation = `UPDATE information_table 
+SET information_id = $1, reg_date=$2, subject=$3, firstname=$4, lastname=$5, apply_email=$6, apply_location=$7, apply_phone=$8, apply_motivation=$9, apply_website=$10
+WHERE information_id = $11
+`;
+const bo_addInformation = `INSERT INTO information_table (information_id, ad_id, user_id, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website, reg_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
+`;
+
 module.exports = {
     getInformation,
     getInformationByDynamic,
@@ -38,4 +45,6 @@ module.exports = {
     addUID,
     checkApplicationExist,
     getCompanyEmail,
+    bo_updateInformation,
+    bo_addInformation,
 }

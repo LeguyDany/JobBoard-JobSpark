@@ -6,7 +6,6 @@ const functions = require('../../functions');
 
 // Reads all companies from the db
 const getCompanies = (req, res) => {
-    console.log(res.locals.user_info);
     pool.query(queries.getCompanies, (error, results) => {
         if (error) throw error;
         res.status(200).json(results.rows);
@@ -85,10 +84,56 @@ const updateCompany = (req, res) => {
     })
 }
 
+const getCompanyById = async (req, res) => {
+    const id = req.params.id;
+    pool.query(queries.getCompanyById, [id], (error, results) => {
+        if (error) return res.status(400).send("An error has occured:" + error);
+        if (!results.rows.length) return res.send("No information with this id.")
+        return res.status(200).send(results.rows);
+    });
+}
+
+const bo_updateCompany = (req, res) => {
+    const id = req.params.id;
+    const { company_id, company_name, reg_date, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language } = req.body;
+
+    pool.query(queries.bo_updateCompany, [company_id, company_name, reg_date, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language , id], (error, results) => {
+        if (error) throw error;
+        res.status(200).send("Company updated successfully.");
+    })
+}
+
+const bo_addCompany = (req, res) => {
+    // Adds a row to the companies table through the back-office.
+
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "" ) req.body[item] = null
+    }
+
+    const { company_name, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language } = req.body;
+
+    // Creates a new uuid for the new information
+    pool.query(queries.addUID, (error, results) => {
+        if (error) throw error;
+        const uuid = results.rows[0]["uuid_generate_v4"];
+        const today = functions.getTimeNow();
+
+        // Adds the row to db
+        pool.query(queries.bo_addCompany, [uuid, company_name, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language, today], (error, results) => {
+            if (error) throw error;
+            res.status(201).send("Row added to the table successfully!");
+        })
+    })
+}
+
 module.exports = {
     getCompanies,
     getCompaniesByDynamic,
     addCompany,
     removeCompany,
     updateCompany,
+    getCompanyById,
+    bo_updateCompany,
+    bo_addCompany
 }

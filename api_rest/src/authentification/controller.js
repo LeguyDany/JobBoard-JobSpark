@@ -25,7 +25,6 @@ function createToken(req, res) {
                     verified: results.rows[0].verified,
                 };
                 const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
-
                 res.status(200).json({ token: token });
             });
         });

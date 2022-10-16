@@ -20,9 +20,10 @@ import {
 } from "./connection";
 import {
   Bo_listing,
-  See_more,
+  See_all,
   Edit,
   Remove,
+  Add_new,
 } from './back-office';
 import JobOffers from './job-listing';
 
@@ -35,7 +36,7 @@ import Twitter from './assets/icons/twitter-fill.svg';
 import Youtube from './assets/icons/youtube-line.svg';
 
 // URL to the DB, as a global variable so only needs to be changed once
-const dburl = "https://a635-2a02-8440-3440-5136-c0c5-1b61-64e0-ce05.eu.ngrok.io/";
+const dburl = "http://localhost:3001/";
 export default dburl;
 
 // ignore ngrock warnings
@@ -177,10 +178,11 @@ function ShowPage() {
         <Route path="/Recovery/" element={<Recovery />} />
         <Route path="/Reset_pass/:token" element={<ResetPass />} />
         <Route path="/Verify/:token" element={<Verify />} />
-        <Route path="/Back-office" element={<Bo_listing />} />
-        <Route path="/See_more/:id/:table" element={<See_more />} />
-        <Route path="/Edit/:id" element={<Edit />} />
-        <Route path="/Remove/:id" element={<Remove />} />
+        <Route path="/Back-office/" element={<Bo_listing />} />
+        <Route path="/Add_new/:table" element={<Add_new />} />
+        <Route path="/See_all/:id/:table" element={<See_all />} />
+        <Route path="/Edit/:id/:table" element={<Edit />} />
+        <Route path="/Remove/:id/:table" element={<Remove />} />
         <Route path="/Offers" element={<JobOffers />} />
       </Routes>
     </Router>

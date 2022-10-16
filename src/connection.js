@@ -107,7 +107,7 @@ export function Login() {
         }
 
         const res = await axios.post(url, data)
-        if (res.data == "User unregistered or wrong password." || res.data == "Wrong password, please try again.") {
+        if (res.data == "User unregistered or wrong password." || res.data == "Wrong password, please try again." || res.data == "Verify your email address first.") {
             return setBack_response(React.createElement("p", { id: "warning" }, res.data));
         }
         setBack_response(React.createElement("p", {}, "Connexion to the account."));

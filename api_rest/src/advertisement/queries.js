@@ -2,7 +2,9 @@
 
 const getOffer = `SELECT advertisement_table.*, company_table.company_name, company_table.n_employees
 FROM advertisement_table
-INNER JOIN company_table ON advertisement_table.company_id = company_table.company_id`;
+INNER JOIN company_table ON advertisement_table.company_id = company_table.company_id
+ORDER BY reg_date DESC;
+`;
 
 const getOfferByDynamic = `
 SELECT advertisement_table.*, company_table.n_employees, company_table.company_name 
@@ -37,6 +39,16 @@ WHERE advertisement_table.company_id = $1;
 
 const getCompanyName = `SELECT company_id FROM company_table WHERE company_mail = $1`;
 
+const getOfferById = `SELECT advertisement_table.*, company_table.company_name, company_table.n_employees
+FROM advertisement_table 
+INNER JOIN company_table ON advertisement_table.company_id = company_table.company_id 
+WHERE ad_id = $1`;
+const bo_updateOffer = `UPDATE advertisement_table
+SET ad_id=$1, offer_name=$2, offer_desc=$3, offer_profile_desc=$4, offer_language=$5, contract_type=$6, offer_work_type=$7, offer_location=$8, company_id=$9, remote_work=$10, starting_date=$11, salary_min=$12, reg_date=$13, work_duration=$14, experience_years=$15
+WHERE ad_id = $16
+`;
+const bo_addOffer = `INSERT INTO advertisement_table (ad_id, offer_name, offer_desc, offer_profile_desc, offer_language, company_id, contract_type, offer_work_type, offer_location, remote_work, starting_date, salary_min, work_duration, experience_years, reg_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`;
+
 module.exports = {
     getOffer,
     getOfferByDynamic,
@@ -48,4 +60,7 @@ module.exports = {
     updateOffer,
     getCompanyInfo,
     getCompanyName,
+    getOfferById,
+    bo_updateOffer,
+    bo_addOffer,
 }

@@ -1,3 +1,40 @@
+/* ===================== Back-office : General ===================== */
+h2 {
+    text-align: center;
+}
+
+#Bo_filters form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--black0);
+    margin: 20px 0px 20px 0px;
+}
+
+#Bo_filters p {
+    text-align: center;
+}
+
+#table_select {
+    border: none;
+    padding: 10px;
+    border-bottom: 0px solid var(--yellow0);
+    outline: none;
+    transition: .3s;
+    margin: 20px;
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, .02);
+}
+
+#table_select:hover {
+    transition: .3s;
+    border-bottom: 2px solid var(--yellow0);
+}
+
+#Bo_filters button {
+    color: white;
+    margin: 20px;
+}
 
 .sectionDB {
     overflow-x: scroll;
@@ -7,6 +44,7 @@
     margin: 20px 0px 20px 0px;
     box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, .02);
 }
+
 table {
     width: 100%;
     font-weight: normal;
@@ -14,29 +52,63 @@ table {
     border-collapse: collapse;
     white-space: nowrap;
 }
+
 .sectionDB thead th {
     background-color: var(--black0);
     color: var(--white);
 }
-.sectionDB thead th,.sectionDB tbody td {
+
+.sectionDB thead th,
+.sectionDB tbody td {
     text-align: center;
     padding: 15px 30px 15px 30px;
 }
+
 .sectionDB tr:nth-child(even) {
     background-color: #F6F7F9;
 }
-.sectionDB table a{
+
+.sectionDB table a {
     text-decoration: none;
     color: var(--black4);
     border-bottom: solid 0px var(--yellow1);
     transition: .5s;
 }
-.sectionDB table a:hover{
+
+.sectionDB table a:hover {
     color: var(--black0);
     border-bottom: solid 2px var(--yellow1);
     transition: .5s;
 }
 
+#Bo_layout th {
+    width: 33%;
+}
+
+#Bo_layout td {
+    width: 67%;
+}
+
+.Bo_title {
+    text-align: center;
+    margin: 0px;
+    padding: 10px;
+    background-color: var(--black0);
+    color: var(--white);
+}
+
+.page_numbering {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap:10px;
+    margin: 30px;
+    align-items: center;
+}
+.page_numbering button{
+    margin-top: 0px;
+}
 /* ===================== Back-office : See all ===================== */
 
 #Bo_layout {
@@ -46,16 +118,40 @@ table {
     flex-direction: column;
     justify-content: center;
 }
-#Bo_layout th, #Bo_layout td {
+
+#Bo_layout th,
+#Bo_layout td {
     text-align: center;
     padding: 15px 30px 15px 30px;
 }
-#Bo_layout th{
+
+#Bo_layout th {
     background-color: var(--black0);
     border-bottom: solid 1px var(--black1);
     color: var(--white);
 }
 
-#Bo_layout tbody tr:nth-child(even){
+#Bo_layout tbody tr:nth-child(even) {
     background-color: #F6F7F9;
+}
+
+
+/* ===================== Back-office : Edit ===================== */
+
+#Bo_layout input {
+    border: 2px solid var(--yellow1);
+    height: 100%;
+    width: 100%;
+    background-color: none;
+    outline: none;
+    color: var(--black0);
+}
+
+#Bo_layout button {
+    margin: 30px;
+}
+
+#Bo_layout p {
+    text-align: center;
+
 }

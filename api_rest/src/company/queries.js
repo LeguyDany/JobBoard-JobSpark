@@ -11,6 +11,15 @@ const removeCompany = "DELETE FROM company_table WHERE company_id = $1";
 const updateCompany = `UPDATE company_table 
 SET company_name = $1, company_desc = $2 , n_employees=$3 , hq_location=$4 , work_sector=$5, company_vip=$6, company_pic=$7, company_phone=$8, language=$9, company_social=$10, company_mail=$11, company_banner=$12
 WHERE company_id = $13`;
+const getCompanyById = "SELECT * FROM company_table WHERE company_id = $1";
+const bo_updateCompany = `UPDATE company_table
+SET company_id=$1, company_name=$2, reg_date=$3, siret=$4, company_desc=$5, n_employees=$6, hq_location=$7, work_sector=$8, company_mail=$9, company_phone=$10, n_followers=$11, company_vip=$12, company_social=$13, language=$14 
+WHERE company_id = $15
+`;
+const bo_addCompany = `INSERT INTO company_table (company_id, company_name, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language, reg_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
+`;
+
+
 
 module.exports = {
     getCompanies,
@@ -22,4 +31,7 @@ module.exports = {
     removeCompany,
     checkCompanyExist,
     updateCompany,
+    getCompanyById,
+    bo_updateCompany,
+    bo_addCompany,
 }
