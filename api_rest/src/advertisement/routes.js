@@ -14,6 +14,6 @@ router.post('/advertisement/back_office/', [middleware.verify, middleware.checkR
 router.delete("/advertisement/:offer_id", [middleware.verify, middleware.checkRightsLv1], controller.removeOffer);
 
 router.put("/advertisement/:offer_id", [middleware.verify, middleware.checkRightsLv1], controller.updateOffer);
-router.put("/advertisement/back_office/:id", controller.bo_updateOffer);
+router.put("/advertisement/back_office/:id", [middleware.verify, middleware.checkRightsLv2], controller.bo_updateOffer);
 
 module.exports = router;

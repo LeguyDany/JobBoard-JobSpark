@@ -15,6 +15,6 @@ router.post('/companies/back_office/', [middleware.verify, middleware.checkRight
 router.delete("/companies/:company_id", [middleware.verify, middleware.checkRightsLv1], controller.removeCompany);
 
 router.put("/companies/:company_id", [middleware.verify, middleware.checkRightsLv1], controller.updateCompany);
-router.put("/companies/back_office/:id", controller.bo_updateCompany);
+router.put("/companies/back_office/:id", [middleware.verify, middleware.checkRightsLv2], controller.bo_updateCompany);
 
 module.exports = router;

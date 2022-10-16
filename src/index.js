@@ -8,6 +8,8 @@ import {
   Route
 } from "react-router-dom";
 import axios from 'axios';
+import MediaQuery from 'react-responsive';
+import { slide as Menu } from 'react-burger-menu';
 
 // Render page functions import
 import {
@@ -26,6 +28,8 @@ import {
   Add_new,
 } from './back-office';
 import JobOffers from './job-listing';
+import Companies from './companies';
+import HomePage from './home';
 
 // Logo and stuff
 import Logo from './Logo1.svg';
@@ -34,6 +38,14 @@ import Instagram from './assets/icons/instagram-line.svg';
 import LinkedIn from './assets/icons/linkedin-fill.svg';
 import Twitter from './assets/icons/twitter-fill.svg';
 import Youtube from './assets/icons/youtube-line.svg';
+
+// Burger icons
+import Burger from './assets/icons/burger.svg';
+import CompanyIcon from './assets/icons/company.svg';
+import ListingIcon from './assets/icons/listing.svg';
+import RegisterIcon from './assets/icons/register.svg';
+import LoginIcon from './assets/icons/login.svg';
+import HomeIcon from './assets/icons/home.svg';
 
 // URL to the DB, as a global variable so only needs to be changed once
 const dburl = "http://localhost:3001/";
@@ -83,24 +95,48 @@ function Header() {
     loadData()
   }, [])
 
+
+  const RoyalWithCheese = () => {
+    return (
+      <Menu right id={"navburger"} outerContainerId={ "burger" } customBurgerIcon={<img src={Burger} />}>
+        <div className="burgerbutton">
+          <a id="home" className="menu-item" href="/"><img src={HomeIcon}/>Home</a><br/>
+          <a id="login" className="menu-item" href="/Login"><img src={LoginIcon}/>Login</a><br/>
+          <a id="register" className="menu-item" href="/Register"><img src={RegisterIcon}/>Register</a><br/>
+          <a id="companies" className="menu-item" href="/Companies"><img src={CompanyIcon}/>Companies</a><br/>
+          <a id="offers" className="menu-item" href="/Offers"><img src={ListingIcon}/>Offers</a><br/>
+        </div>
+      </Menu>
+    )
+
+  }
+
   return (
     <header>
       <img src={Logo} />
       <nav>
-        {header_content.content.map((page) => (
-          <a key={page} className={page[1]} href={"/" + page[0]} > <h4>{page[0]}</h4></a>
-        ))}
+        <MediaQuery minWidth={1024}>
+          {header_content.content.map((page) => (
+            <a key={page} className={page[1]} href={"/" + page[0]} > <h4>{page[0]}</h4></a>
+          ))}
+        </MediaQuery>
+        <MediaQuery maxWidth={1023}>
+          <div className="burger">
+            <RoyalWithCheese />
+          </div>
+        </MediaQuery>
       </nav>
     </header>
   )
 }
+
 
 // à refaire: Footer (parceque c'est pas aligné)
 function Footer() {
   return (
     <footer>
       <div className="footer black0">
-        <div className="row">
+        <div className="foot-row">
           <div className='col-footer'>
             <img className='img-center' width="50%" src={LogoWhite} />
             <h3>About</h3>
@@ -145,15 +181,6 @@ function Footer() {
   )
 }
 
-function Home() {
-  return (
-    <div>
-      <h1>Home</h1>
-      <p>wip</p>
-    </div>
-  )
-}
-
 function Error404() {
   return (
     <div className="errorbox">
@@ -170,12 +197,13 @@ function ShowPage() {
     <Router>
       <Routes>
         <Route path="*" element={<Error404 />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/Home" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/Home" element={<HomePage />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Logout" element={<Logout />} />
         <Route path="/Recovery/" element={<Recovery />} />
+        <Route path="/Companies" element={<Companies />} />
         <Route path="/Reset_pass/:token" element={<ResetPass />} />
         <Route path="/Verify/:token" element={<Verify />} />
         <Route path="/Back-office/" element={<Bo_listing />} />

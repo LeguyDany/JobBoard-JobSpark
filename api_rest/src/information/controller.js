@@ -30,7 +30,7 @@ const applyOffer = (req, res) => {
                 const message = `
                 <p>Hello, <br><br>
 
-                A user name <b>${firstname}</b> with the address email <b>${apply_email}</b> has sent an application to your job offer called <b>${results.rows[0].offer_name}</b>. Don't hesitate to review this offer! <br><br>
+                An user named <b>${firstname}</b> with the email address <b>${apply_email}</b> has sent an application to your job offer called <b>${results.rows[0].offer_name}</b>. Don't hesitate to review this offer! <br><br>
 
                 Best regards, <br><br>
 
@@ -92,6 +92,10 @@ const getInformationById = async (req, res) => {
 }
 const bo_updateInformation = (req, res) => {
     const id = req.params.id;
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
+    }
     const { information_id, reg_date, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website } = req.body;
 
     pool.query(queries.bo_updateInformation, [information_id, reg_date, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website, id], (error, results) => {
@@ -105,7 +109,7 @@ const bo_addInformation = (req, res) => {
 
     // Convert strings without content or with a default "null" content to a null value.
     for (const item in req.body) {
-        if (req.body[item] == "null" || req.body[item] == "" ) req.body[item] = null
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
     }
 
     const { ad_id, user_id, subject, firstname, lastname, apply_email, apply_location, apply_phone, apply_motivation, apply_website } = req.body;

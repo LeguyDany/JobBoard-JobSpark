@@ -12,6 +12,6 @@ router.post('/users/back_office/', [middleware.verify, middleware.checkRightsLv2
 router.get("/users/dynamic/", controller.getUsersByDynamic);
 router.delete("/users/:user_id", [middleware.verify, middleware.checkRightsLv1], controller.removeUser);
 router.put("/users/:user_id", controller.updateUser);
-router.put("/users/back_office/:id", controller.bo_updateUser);
+router.put("/users/back_office/:id", [middleware.verify, middleware.checkRightsLv2], controller.bo_updateUser);
 
 module.exports = router;

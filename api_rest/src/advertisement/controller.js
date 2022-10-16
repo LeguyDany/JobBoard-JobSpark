@@ -91,6 +91,10 @@ const getOfferById = async (req, res) => {
 }
 const bo_updateOffer = (req, res) => {
     const id = req.params.id;
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
+    }
     const { ad_id, offer_name, offer_desc, offer_profile_desc, offer_language, contract_type, offer_work_type, offer_location, company_id, remote_work, starting_date, salary_min, reg_date, work_duration, experience_years } = req.body;
 
     pool.query(queries.bo_updateOffer, [ad_id, offer_name, offer_desc, offer_profile_desc, offer_language, contract_type, offer_work_type, offer_location, company_id, remote_work, starting_date, salary_min, reg_date, work_duration, experience_years, id], (error, results) => {
@@ -103,7 +107,7 @@ const bo_addOffer = (req, res) => {
 
     // Convert strings without content or with a default "null" content to a null value.
     for (const item in req.body) {
-        if (req.body[item] == "null" || req.body[item] == "" ) req.body[item] = null
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
     }
 
     const { offer_name, offer_desc, offer_profile_desc, offer_language, company_id, contract_type, offer_work_type, offer_location, remote_work, starting_date, salary_min, work_duration, experience_years } = req.body;

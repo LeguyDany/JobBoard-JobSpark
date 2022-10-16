@@ -95,9 +95,13 @@ const getCompanyById = async (req, res) => {
 
 const bo_updateCompany = (req, res) => {
     const id = req.params.id;
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
+    }
     const { company_id, company_name, reg_date, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language } = req.body;
 
-    pool.query(queries.bo_updateCompany, [company_id, company_name, reg_date, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language , id], (error, results) => {
+    pool.query(queries.bo_updateCompany, [company_id, company_name, reg_date, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language, id], (error, results) => {
         if (error) throw error;
         res.status(200).send("Company updated successfully.");
     })
@@ -108,7 +112,7 @@ const bo_addCompany = (req, res) => {
 
     // Convert strings without content or with a default "null" content to a null value.
     for (const item in req.body) {
-        if (req.body[item] == "null" || req.body[item] == "" ) req.body[item] = null
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
     }
 
     const { company_name, siret, company_desc, n_employees, hq_location, work_sector, company_mail, company_phone, n_followers, company_vip, company_social, language } = req.body;

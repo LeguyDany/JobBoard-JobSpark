@@ -11,7 +11,7 @@ router.post('/information/', controller.applyOffer);
 router.post('/information/back_office/', [middleware.verify, middleware.checkRightsLv2], controller.bo_addInformation);
 router.delete("/information/:information_id", [middleware.verify, middleware.checkRightsLv1], controller.removeInformation);
 router.put("/information/:information_id", [middleware.verify, middleware.checkRightsLv1], controller.updateInformation);
-router.put("/information/back_office/:id", controller.bo_updateInformation);
+router.put("/information/back_office/:id", [middleware.verify, middleware.checkRightsLv2], controller.bo_updateInformation);
 
 
 module.exports = router;

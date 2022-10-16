@@ -109,6 +109,10 @@ const getUserById = (req, res) => {
 
 const bo_updateUser = (req, res) => {
     const id = req.params.id;
+    // Convert strings without content or with a default "null" content to a null value.
+    for (const item in req.body) {
+        if (req.body[item] == "null" || req.body[item] == "") req.body[item] = null
+    }
     const { user_id, firstname, lastname, age, user_type, wanted_work, location, reg_date, user_email, user_phone, user_website, user_linkedin, user_social, newsletter, verified } = req.body;
 
     pool.query(queries.checkUserExist, [id], (error, results) => {
