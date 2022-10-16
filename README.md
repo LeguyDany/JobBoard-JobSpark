@@ -59,9 +59,6 @@ Open a new command prompt and go to the project directory
 ### Offers' page
 ![App Screenshot](https://snipboard.io/NfDEo8.jpg)
 
-### Registration page
-![App Screenshot](https://snipboard.io/nFkSIL.jpg)
-
 ### Back-office page
 ![App Screenshot](https://snipboard.io/sByvlH.jpg)
 
