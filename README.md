@@ -23,7 +23,7 @@ __Stacks:__
 Clone the project
 
 ```bash
-  git clone https://github.com/EpitechMscProPromo2025/T-WEB-501-PAR-5-1-jobboard-dany.leguy.git
+  git clone https://github.com/LeguyDany/JobBoard-JobSpark.git
 ```
 
 Go to the project directory
