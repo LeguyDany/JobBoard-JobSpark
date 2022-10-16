@@ -20,6 +20,8 @@ __Stacks:__
 
 ## Run Locally
 
+__Notes: If you want to also run the database, you need to install postgresql and load what's in the Database directory into a new table. Try to set it up with what's in the "./api_rest/db.js" folder after loading it.__
+
 Clone the project
 
 ```bash
