@@ -38,7 +38,6 @@ Start the server
 ```
 
 Open a new command prompt and go to the project directory
-Start the server
 
 ```bash
   npm start
@@ -53,9 +52,6 @@ Start the server
 
 ### Login page
 ![App Screenshot](https://snipboard.io/CW1pM5.jpg)
-
-### Registration page
-![App Screenshot](https://snipboard.io/nFkSIL.jpg)
 
 ### Registration page
 ![App Screenshot](https://snipboard.io/nFkSIL.jpg)
