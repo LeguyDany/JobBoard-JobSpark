@@ -35,11 +35,18 @@ Go to the project directory
 ```
 
 Start the server
+
 ```bash
   npm run dev
 ```
 
 Open a new command prompt and go to the project directory
+
+Downloading the dependencies
+
+```bash
+npm i
+```
 
 ```bash
   npm start
