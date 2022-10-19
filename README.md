@@ -45,7 +45,7 @@ Open a new command prompt and go to the project directory
 Downloading the dependencies and starting the website
 
 ```bash
-npm i
+  npm i
 ```
 
 ```bash
